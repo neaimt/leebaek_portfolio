@@ -25,4 +25,6 @@ export type Technology =
   | 'Express'
   | 'AWS EC2'
   | 'Swift'
-  | 'SwiftUI';
+  | 'SwiftUI'
+  | 'Google Cloud Vision API'
+  | 'Gemini AI';

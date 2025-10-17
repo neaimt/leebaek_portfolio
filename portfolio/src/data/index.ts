@@ -31,9 +31,9 @@ export const projectItems: ProjectItemProps[] = [
     status: 'Completed',
     description:
       '현장 메모 이미지를 OCR + AI로 분석해 견적서를 자동 생성하는 기능입니다.\n사용자는 최소한의 입력만으로 간편하고 빠르게 견적서를 작성할 수 있습니다.',
-    role: '#프론트엔드 개발',
+    role: '#프론트엔드 개발 #AI 모델 연동',
     period: '2025.07 - 2025.08 (총 1개월)',
-    technologies: ['React Native', 'TypeScript'],
+    technologies: ['React Native', 'TypeScript', 'Google Cloud Vision API', 'Gemini AI'],
     links: [],
     images: [memo1],
   },
