@@ -3,7 +3,7 @@ export interface ProjectItemProps {
   id: number;
   status?: string; // 프로젝트 상태 (예: 진행 중, 완료 등)
   role?: string; // 담당 역할
-  period?: string; // 프로젝트 기간
+  period: string; // 프로젝트 기간
   technologies?: Technology[]; // 사용 기술
   title: string; // 제목
   description: string; // 설명

@@ -1,10 +1,14 @@
 import styled from 'styled-components';
 import type { ProjectItemProps } from '../types/projectItem';
 
-function ProjectItem(props: ProjectItemProps) {
+interface ProjectItemWithIndex extends ProjectItemProps {
+  idx: number;
+}
+
+function ProjectItem({ idx, ...props }: ProjectItemWithIndex) {
   return (
     <Container>
-      <Id>{props.id}</Id>
+      <Id>{idx + 1}</Id>
       <Image src={Array.isArray(props.images) ? props.images[0] : props.images} alt={props.title} />
       <TextContainer>
         <ColBox>
