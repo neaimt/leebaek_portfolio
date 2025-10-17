@@ -1,8 +1,8 @@
 import ProjectItem from './ProjectItem';
 import { projectItems } from '../data';
-import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import SortDropdown from './SortDropdown';
+import styled, { css } from 'styled-components';
 
 function ProjectItemList() {
   const allItems = projectItems;
@@ -57,9 +57,15 @@ function ProjectItemList() {
       <SortFilterBar>
         {/** APP/WEB 필터 메뉴 **/}
         <FilterMenu>
-          <Button onClick={() => onClickFilter('ALL')}>ALL</Button>
-          <Button onClick={() => onClickFilter('WEB')}>WEB</Button>
-          <Button onClick={() => onClickFilter('APP')}>APP</Button>
+          <Button onClick={() => onClickFilter('ALL')} isActive={filterOption === 'ALL'}>
+            ALL
+          </Button>
+          <Button onClick={() => onClickFilter('WEB')} isActive={filterOption === 'WEB'}>
+            WEB
+          </Button>
+          <Button onClick={() => onClickFilter('APP')} isActive={filterOption === 'APP'}>
+            APP
+          </Button>
         </FilterMenu>
 
         {/** 정렬 기능 */}
@@ -98,7 +104,7 @@ const FilterMenu = styled.nav`
   gap: 10px;
 `;
 
-const Button = styled.button`
+const Button = styled.button<{ isActive: boolean }>`
   font-size: 14px;
   font-weight: 500;
   padding: 8px 18px;
@@ -110,4 +116,10 @@ const Button = styled.button`
     color: #000000;
     cursor: pointer;
   }
+
+  ${({ isActive }) =>
+    isActive &&
+    css`
+      color: #000000;
+    `}
 `;
