@@ -29,20 +29,24 @@ function ProjectItem({ idx, ...props }: ProjectItemWithIndex) {
 
 export default ProjectItem;
 
-const Container = styled.div`
-  width: fit-content;
-  height: 300px;
-  padding: 20px;
-  display: flex;
-  border-top: 1px solid #ddd;
-`;
-
 const Id = styled.div`
   margin: auto 0;
   margin-right: 20px;
   font-size: 100px;
   font-weight: 600;
   color: #f0f0f0;
+`;
+
+const Container = styled.div`
+  width: fit-content;
+  height: 300px;
+  padding: 20px;
+  display: flex;
+  border-top: 1px solid #ddd;
+
+  &:hover ${Id} {
+    color: #f2f5ff;
+  }
 `;
 
 const Image = styled.img`
