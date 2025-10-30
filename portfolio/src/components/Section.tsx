@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 
 interface Props {
-  title: string;
+  title?: string;
   children: React.ReactNode;
 }
 
 function Section({ title, children }: Props) {
   return (
     <Container>
-      <Title>{title}</Title>
+      {title && <Title>{title}</Title>}
       {children}
     </Container>
   );
