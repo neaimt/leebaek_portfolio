@@ -9,6 +9,8 @@ function ProjectItemList() {
   const [filteredItems, setFilteredItems] = useState(allItems);
   const [filterOption, setFilterOption] = useState('ALL'); // 필터 상태
   const [sortOption, setSortOption] = useState('default'); // 정렬 상태
+  const [isClosing, setIsClosing] = useState(false);
+  const [selectedItemIdx, setSelectedItemIdx] = useState<number | null>(null); // 선택된 프로젝트 인덱스
   const [selectedItem, setSelectedItem] = useState<number | null>(null); // 선택된 프로젝트 ID
 
   // 날짜 파싱 함수
@@ -54,13 +56,32 @@ function ProjectItemList() {
   };
 
   // 아이템 클릭 시 상세 보기 열기
-  const onClickItem = (id: number) => {
-    setSelectedItem(id);
+  const onClickItem = (id: number, idx: number) => {
+    if (selectedItem !== null) {
+      setIsClosing(true);
+
+      // 닫는 애니메이션이 끝난 뒤 새 아이템 열기
+      setTimeout(() => {
+        setSelectedItem(id);
+        setSelectedItemIdx(idx);
+        setIsClosing(false);
+      }, 400);
+    } else {
+      // 아무것도 안 열려 있으면 바로 열기
+      setSelectedItem(id);
+      setSelectedItemIdx(idx);
+    }
   };
 
   // 상세보기 닫기 핸들러
   const closeDetail = () => {
-    setSelectedItem(null);
+    setIsClosing(true);
+
+    setTimeout(() => {
+      setSelectedItem(null);
+      setIsClosing(false);
+      setSelectedItemIdx(null);
+    }, 400);
   };
 
   return (
@@ -68,13 +89,13 @@ function ProjectItemList() {
       <SortFilterBar>
         {/** APP/WEB 필터 메뉴 **/}
         <FilterMenu>
-          <Button onClick={() => onClickFilter('ALL')} isActive={filterOption === 'ALL'}>
+          <Button onClick={() => onClickFilter('ALL')} $isActive={filterOption === 'ALL'}>
             ALL
           </Button>
-          <Button onClick={() => onClickFilter('WEB')} isActive={filterOption === 'WEB'}>
+          <Button onClick={() => onClickFilter('WEB')} $isActive={filterOption === 'WEB'}>
             WEB
           </Button>
-          <Button onClick={() => onClickFilter('APP')} isActive={filterOption === 'APP'}>
+          <Button onClick={() => onClickFilter('APP')} $isActive={filterOption === 'APP'}>
             APP
           </Button>
         </FilterMenu>
@@ -85,7 +106,7 @@ function ProjectItemList() {
       {/** 프로젝트 아이템 리스트 */}
       <ul>
         {filteredItems.map((item, idx) => (
-          <li key={item.id} onClick={() => onClickItem(item.id)}>
+          <li key={item.id} onClick={() => onClickItem(item.id, idx)}>
             <ProjectItem key={item.id} idx={idx} {...item} />
           </li>
         ))}
@@ -93,7 +114,7 @@ function ProjectItemList() {
 
       {/* 오른쪽 상세보기 화면 */}
       {selectedItem && (
-        <DetailPanel>
+        <DetailPanel $isClosing={isClosing} $id={selectedItemIdx! + 1}>
           <CloseButton onClick={closeDetail}>×</CloseButton>
         </DetailPanel>
       )}
@@ -126,7 +147,7 @@ const FilterMenu = styled.nav`
   gap: 10px;
 `;
 
-const Button = styled.button<{ isActive: boolean }>`
+const Button = styled.button<{ $isActive: boolean }>`
   font-size: 14px;
   font-weight: 500;
   padding: 8px 18px;
@@ -139,24 +160,24 @@ const Button = styled.button<{ isActive: boolean }>`
     cursor: pointer;
   }
 
-  ${({ isActive }) =>
-    isActive &&
+  ${({ $isActive }) =>
+    $isActive &&
     css`
       color: #000000;
     `}
 `;
 
-const DetailPanel = styled.div`
+const DetailPanel = styled.div<{ $isClosing: boolean; $id: number }>`
   position: absolute;
-  top: 60px;
+  top: ${({ $id }) => 60 + ($id - 1) * 300}px; /* id에 따라 top 변경 */
   right: 0;
   width: 56%;
-  height: 100%;
+  height: 290px;
   background-color: #ffffff;
   border-left: 1px solid #ddd;
 
   overflow-y: auto;
-  animation: slideIn 0.4s ease forwards;
+  animation: ${({ $isClosing }) => ($isClosing ? 'slideOut' : 'slideIn')} 0.4s ease forwards;
 
   @keyframes slideIn {
     from {
@@ -164,6 +185,15 @@ const DetailPanel = styled.div`
     }
     to {
       transform: translateX(0);
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(100%);
     }
   }
 `;
