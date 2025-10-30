@@ -9,6 +9,7 @@ function ProjectItemList() {
   const [filteredItems, setFilteredItems] = useState(allItems);
   const [filterOption, setFilterOption] = useState('ALL'); // 필터 상태
   const [sortOption, setSortOption] = useState('default'); // 정렬 상태
+  const [selectedItem, setSelectedItem] = useState<number | null>(null); // 선택된 프로젝트 ID
 
   // 날짜 파싱 함수
   const parseStartDate = (period: string) => {
@@ -52,6 +53,16 @@ function ProjectItemList() {
     setSortOption(option);
   };
 
+  // 아이템 클릭 시 상세 보기 열기
+  const onClickItem = (id: number) => {
+    setSelectedItem(id);
+  };
+
+  // 상세보기 닫기 핸들러
+  const closeDetail = () => {
+    setSelectedItem(null);
+  };
+
   return (
     <Container>
       <SortFilterBar>
@@ -71,11 +82,21 @@ function ProjectItemList() {
         {/** 정렬 기능 */}
         <SortDropdown onSortChange={onSortChange} />
       </SortFilterBar>
-
       {/** 프로젝트 아이템 리스트 */}
-      {filteredItems.map((item, idx) => (
-        <ProjectItem key={item.id} idx={idx} {...item} />
-      ))}
+      <ul>
+        {filteredItems.map((item, idx) => (
+          <li key={item.id} onClick={() => onClickItem(item.id)}>
+            <ProjectItem key={item.id} idx={idx} {...item} />
+          </li>
+        ))}
+      </ul>
+
+      {/* 오른쪽 상세보기 화면 */}
+      {selectedItem && (
+        <DetailPanel>
+          <CloseButton onClick={closeDetail}>×</CloseButton>
+        </DetailPanel>
+      )}
     </Container>
   );
 }
@@ -83,6 +104,7 @@ function ProjectItemList() {
 export default ProjectItemList;
 
 const Container = styled.div`
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -122,4 +144,41 @@ const Button = styled.button<{ isActive: boolean }>`
     css`
       color: #000000;
     `}
+`;
+
+const DetailPanel = styled.div`
+  position: absolute;
+  top: 60px;
+  right: 0;
+  width: 56%;
+  height: 100%;
+  background-color: #ffffff;
+  border-left: 1px solid #ddd;
+
+  overflow-y: auto;
+  animation: slideIn 0.4s ease forwards;
+
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #999;
+
+  &:hover {
+    color: #000;
+  }
 `;
