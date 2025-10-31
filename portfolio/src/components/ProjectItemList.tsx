@@ -3,6 +3,7 @@ import { projectItems } from '../data';
 import { useState, useEffect } from 'react';
 import SortDropdown from './SortDropdown';
 import styled, { css } from 'styled-components';
+import ProjectDetail from './ProjectDetail';
 
 function ProjectItemList() {
   const allItems = projectItems;
@@ -122,6 +123,7 @@ function ProjectItemList() {
       {selectedItem && (
         <DetailPanel $isClosing={isClosing} $id={selectedItemIdx! + 1}>
           <CloseButton onClick={closeDetail}>×</CloseButton>
+          <ProjectDetail item={filteredItems[selectedItemIdx!]} />
         </DetailPanel>
       )}
     </Container>
@@ -178,7 +180,7 @@ const DetailPanel = styled.div<{ $isClosing: boolean; $id: number }>`
   top: ${({ $id }) => 60 + ($id - 1) * 300}px; /* id에 따라 top 변경 */
   right: 0;
   width: 56%;
-  height: 290px;
+  height: 590px;
   background-color: #ffffff;
   border-left: 1px solid #ddd;
 
