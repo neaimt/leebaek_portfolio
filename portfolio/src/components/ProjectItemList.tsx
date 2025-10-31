@@ -43,8 +43,8 @@ function ProjectItemList() {
 
   // 필터나 정렬 옵션이 바뀔 때마다 자동으로 반영
   useEffect(() => {
-    applyFilterAndSort();
     closeDetail();
+    applyFilterAndSort();
   }, [filterOption, sortOption]);
 
   // 필터 클릭 핸들러
@@ -120,10 +120,10 @@ function ProjectItemList() {
       </ul>
 
       {/* 오른쪽 상세보기 화면 */}
-      {selectedItem && (
-        <DetailPanel $isClosing={isClosing} $id={selectedItemIdx! + 1}>
+      {selectedItem !== null && selectedItemIdx !== null && (
+        <DetailPanel $isClosing={isClosing} $id={selectedItemIdx + 1}>
           <CloseButton onClick={closeDetail}>×</CloseButton>
-          <ProjectDetail item={filteredItems[selectedItemIdx!]} />
+          <ProjectDetail item={filteredItems[selectedItemIdx]} />
         </DetailPanel>
       )}
     </Container>

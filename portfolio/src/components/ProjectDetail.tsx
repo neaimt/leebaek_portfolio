@@ -6,18 +6,20 @@ interface ProjectDetailProps {
 }
 
 function ProjectDetail({ item }: ProjectDetailProps) {
+  if (!item || !item.detail) return null;
+
   const { detail } = item;
 
   return (
     <Wrapper>
       {/* 주요 기능 섹션 */}
-      <Section>
-        <SectionHeader>
-          <SectionTitle>주요 기능 및 개발</SectionTitle>
-        </SectionHeader>
+      {detail && (
+        <Section>
+          <SectionHeader>
+            <SectionTitle>주요 기능 및 개발</SectionTitle>
+          </SectionHeader>
 
-        {detail &&
-          detail.functions.map((func, idx) => (
+          {detail.functions.map((func, idx) => (
             <Card key={idx}>
               <CardTitle>{func.title}</CardTitle>
               <DescriptionList>
@@ -27,52 +29,72 @@ function ProjectDetail({ item }: ProjectDetailProps) {
               </DescriptionList>
             </Card>
           ))}
-      </Section>
-
-      <Divider />
+        </Section>
+      )}
 
       {/* 트러블 슈팅 섹션 */}
-      <Section>
-        <SectionHeader>
-          <SectionTitle>트러블 슈팅</SectionTitle>
-        </SectionHeader>
+      {detail && detail.TroubleshootingCases && (
+        <>
+          <Divider />
+          <Section>
+            <SectionHeader>
+              <SectionTitle>트러블 슈팅</SectionTitle>
+            </SectionHeader>
 
-        {detail &&
-          detail.TroubleshootingCases &&
-          detail.TroubleshootingCases.map((caseItem, idx) => (
-            <Card key={idx}>
-              <CardTitle>{caseItem.title}</CardTitle>
+            {detail.TroubleshootingCases.map((caseItem, idx) => (
+              <Card key={idx}>
+                <CardTitle>{caseItem.title}</CardTitle>
 
-              <SubSection>
-                <SubTitle>문제 상황</SubTitle>
-                <SubText>{caseItem.issue.situation}</SubText>
-              </SubSection>
+                <SubSection>
+                  <SubTitle>문제 상황</SubTitle>
+                  <SubText>{caseItem.issue.situation}</SubText>
+                </SubSection>
 
-              <SubSection>
-                <SubTitle>원인 분석</SubTitle>
-                <SubText>{caseItem.issue.analysis}</SubText>
-              </SubSection>
+                <SubSection>
+                  <SubTitle>원인 분석</SubTitle>
+                  <SubText>{caseItem.issue.analysis}</SubText>
+                </SubSection>
 
-              <SubSection>
-                <SubTitle>해결 과정</SubTitle>
-                <OrderedList>
-                  {caseItem.resolution.steps.map((step, i) => (
-                    <li key={i}>{step}</li>
-                  ))}
-                </OrderedList>
-              </SubSection>
+                <SubSection>
+                  <SubTitle>해결 과정</SubTitle>
+                  <OrderedList>
+                    {caseItem.resolution.steps.map((step, i) => (
+                      <li key={i}>{step}</li>
+                    ))}
+                  </OrderedList>
+                </SubSection>
 
-              <SubSection>
-                <SubTitle>배운 점</SubTitle>
-                <DescriptionList>
-                  {caseItem.learnings.map((learn, i) => (
-                    <li key={i}>{learn}</li>
-                  ))}
-                </DescriptionList>
-              </SubSection>
-            </Card>
-          ))}
-      </Section>
+                <SubSection>
+                  <SubTitle>배운 점</SubTitle>
+                  <DescriptionList>
+                    {caseItem.learnings.map((learn, i) => (
+                      <li key={i}>{learn}</li>
+                    ))}
+                  </DescriptionList>
+                </SubSection>
+              </Card>
+            ))}
+          </Section>
+        </>
+      )}
+
+      {/* 관련 링크 섹션 */}
+      {item && item.links && item.links.length > 0 && (
+        <>
+          <Divider />
+          <Section>
+            <LinkList>
+              {item.links.map((link, idx) => (
+                <LinkItem key={idx}>
+                  <a href={link.url} target="_blank" rel="noopener noreferrer">
+                    {link.text || link.url}
+                  </a>
+                </LinkItem>
+              ))}
+            </LinkList>
+          </Section>
+        </>
+      )}
     </Wrapper>
   );
 }
@@ -154,4 +176,23 @@ const SubTitle = styled.h4`
 const SubText = styled.p`
   color: #475569;
   line-height: 1.6;
+`;
+
+const LinkList = styled.ul`
+  list-style: none;
+  padding-left: 0;
+`;
+
+const LinkItem = styled.li`
+  margin-bottom: 0.8rem;
+
+  a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;

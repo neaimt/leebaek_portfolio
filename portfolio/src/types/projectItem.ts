@@ -10,7 +10,29 @@ export interface ProjectItemProps {
   links?: { text: string; url: string }[]; // 관련 링크
   images: string[]; // 이미지 URL
   projectUrl?: string; // 링크
+  detail?: ProjectItemDetail; // 상세 설명
 }
+
+export interface ProjectItemDetail {
+  functions: {
+    title: string;
+    description: string[];
+  }[]; // 개발 기능에 대한 상세 설명
+  TroubleshootingCases?: TroubleshootingCase[]; // 트러블 슈팅 사례
+}
+
+export interface TroubleshootingCase {
+  title: string; // 예: "트러블 슈팅"
+  issue: {
+    situation: string; // 문제 상황
+    analysis: string; // 원인 분석
+  };
+  resolution: {
+    steps: string[]; // 해결 과정 단계별 설명
+  };
+  learnings: string[]; // 배운 점
+}
+
 export type Technology =
   | 'React'
   | 'TypeScript'
