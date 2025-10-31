@@ -177,31 +177,36 @@ const Button = styled.button<{ $isActive: boolean }>`
 
 const DetailPanel = styled.div<{ $isClosing: boolean; $id: number }>`
   position: absolute;
-  top: ${({ $id }) => 60 + ($id - 1) * 300}px; /* id에 따라 top 변경 */
+  top: ${({ $id }) => 60 + ($id - 1) * 300}px;
   right: 0;
-  width: 56%;
+  width: 700px;
   height: 590px;
   background-color: #ffffff;
   border-left: 1px solid #ddd;
-
   overflow-y: auto;
+  overflow-x: hidden;
+
   animation: ${({ $isClosing }) => ($isClosing ? 'slideOut' : 'slideIn')} 0.4s ease forwards;
 
   @keyframes slideIn {
     from {
-      transform: translateX(100%);
+      transform: translateX(20px);
+      opacity: 0;
     }
     to {
       transform: translateX(0);
+      opacity: 1;
     }
   }
 
   @keyframes slideOut {
     from {
       transform: translateX(0);
+      opacity: 1;
     }
     to {
-      transform: translateX(100%);
+      transform: translateX(20px);
+      opacity: 0;
     }
   }
 `;
