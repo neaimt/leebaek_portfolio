@@ -57,6 +57,11 @@ function ProjectItemList() {
 
   // 아이템 클릭 시 상세 보기 열기
   const onClickItem = (id: number, idx: number) => {
+    if (selectedItemIdx === idx) {
+      closeDetail();
+      return;
+    }
+
     if (selectedItem !== null) {
       setIsClosing(true);
 
