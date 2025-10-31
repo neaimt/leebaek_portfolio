@@ -43,6 +43,7 @@ function ProjectItemList() {
   // 필터나 정렬 옵션이 바뀔 때마다 자동으로 반영
   useEffect(() => {
     applyFilterAndSort();
+    closeDetail();
   }, [filterOption, sortOption]);
 
   // 필터 클릭 핸들러
